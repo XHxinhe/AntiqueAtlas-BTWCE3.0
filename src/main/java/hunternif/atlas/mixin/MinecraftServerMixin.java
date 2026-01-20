@@ -24,4 +24,10 @@ public class MinecraftServerMixin {
             }
         }
     }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void onServerTick(CallbackInfo ci) {
+        MinecraftServer server = (MinecraftServer) (Object) this;
+        AntiqueAtlasMod.onServerTick(server);
+    }
 }

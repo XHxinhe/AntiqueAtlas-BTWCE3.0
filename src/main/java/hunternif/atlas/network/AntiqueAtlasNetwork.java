@@ -1,9 +1,11 @@
-package hunternif.atlas.network;
+package hunternif.atlas. network;
 
 import api.BTWAddon;
 import hunternif.atlas.api.AtlasAPI;
-import hunternif.atlas.marker. Marker;
-import hunternif. atlas.util.Log;
+import hunternif.atlas.marker.Marker;
+import hunternif.atlas.util.Log;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.*;
 
@@ -40,7 +42,7 @@ public class AntiqueAtlasNetwork {
                     handleClientPacket(opcode, in, player);
                 }
             } catch (Exception e) {
-                Log.warn("Error processing atlas packet: " + e.getMessage());
+                Log.warn("Error processing atlas packet:  " + e.getMessage());
             }
         });
 
@@ -70,6 +72,7 @@ public class AntiqueAtlasNetwork {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private static void handleClientPacket(int opcode, DataInputStream in, EntityPlayer player) throws IOException {
         switch (opcode) {
             case OP_MAP_DATA:
@@ -101,17 +104,17 @@ public class AntiqueAtlasNetwork {
         int atlasID = in.readInt();
         int dimension = in.readInt();
         String customTileName = in.readUTF();
-        int x = in.readInt();
+        int x = in. readInt();
         int z = in.readInt();
 
-        AtlasAPI.getTileAPI().putCustomTile(player.worldObj, atlasID, customTileName, x, z);
+        AtlasAPI.getTileAPI().putCustomTile(player. worldObj, atlasID, customTileName, x, z);
     }
 
     private static void handleDeleteMarker(DataInputStream in, EntityPlayerMP player) throws IOException {
         int atlasID = in.readInt();
         int markerID = in.readInt();
 
-        AtlasAPI.getMarkerAPI().deleteMarker(player.worldObj, atlasID, markerID);
+        AtlasAPI.getMarkerAPI().deleteMarker(player. worldObj, atlasID, markerID);
     }
 
     private static void handleAddMarker(DataInputStream in, EntityPlayerMP player) throws IOException {
@@ -129,40 +132,50 @@ public class AntiqueAtlasNetwork {
         String name = in.readUTF();
     }
 
+    @Environment(EnvType.CLIENT)
     private static void handleMapData(DataInputStream in) throws IOException {
         int atlasID = in.readInt();
         int dimension = in.readInt();
     }
 
+    @Environment(EnvType.CLIENT)
     private static void handleTiles(DataInputStream in) throws IOException {
         int atlasID = in.readInt();
         int dimension = in.readInt();
         int count = in.readInt();
+
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc == null || mc.theWorld == null) return;
 
         for (int i = 0; i < count; i++) {
             int biomeID = in.readInt();
             int x = in.readInt();
             int z = in.readInt();
 
-            AtlasAPI.getTileAPI().putBiomeTile(Minecraft.getMinecraft().theWorld, atlasID, biomeID, x, z);
+            AtlasAPI.getTileAPI().putBiomeTile(mc. theWorld, atlasID, biomeID, x, z);
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private static void handleMarkers(DataInputStream in) throws IOException {
         int atlasID = in.readInt();
         int count = in.readInt();
 
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc == null || mc.theWorld == null) return;
+
         for (int i = 0; i < count; i++) {
             String type = in.readUTF();
-            String label = in.readUTF();
+            String label = in. readUTF();
             int x = in.readInt();
             int z = in.readInt();
             boolean visibleAhead = in.readBoolean();
 
-            AtlasAPI.getMarkerAPI().putMarker(Minecraft. getMinecraft().theWorld, visibleAhead, atlasID, type, label, x, z);
+            AtlasAPI.getMarkerAPI().putMarker(mc.theWorld, visibleAhead, atlasID, type, label, x, z);
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private static void handleTileNameID(DataInputStream in) throws IOException {
         int count = in.readInt();
 
@@ -172,6 +185,7 @@ public class AntiqueAtlasNetwork {
         }
     }
 
+    @Environment(EnvType. CLIENT)
     public static void sendPutBiomeTile(int atlasID, int dimension, int biomeID, int x, int z) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -190,6 +204,7 @@ public class AntiqueAtlasNetwork {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void sendAddMarker(int atlasID, String type, String label, int x, int z, boolean visibleAhead) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -205,10 +220,11 @@ public class AntiqueAtlasNetwork {
 
             sendToServer(bos.toByteArray());
         } catch (IOException e) {
-            Log.warn("Error sending add marker packet:  " + e.getMessage());
+            Log.warn("Error sending add marker packet: " + e.getMessage());
         }
     }
 
+    @Environment(EnvType. CLIENT)
     public static void sendDeleteMarker(int atlasID, int markerID) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -224,6 +240,7 @@ public class AntiqueAtlasNetwork {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void sendRegisterTileId(String name) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -247,7 +264,7 @@ public class AntiqueAtlasNetwork {
             dos.writeInt(dimension);
             dos.writeInt(tiles.length);
 
-            for (int[] tile :  tiles) {
+            for (int[] tile : tiles) {
                 dos.writeInt(tile[0]);
                 dos.writeInt(tile[1]);
                 dos.writeInt(tile[2]);
@@ -283,6 +300,7 @@ public class AntiqueAtlasNetwork {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     private static void sendToServer(byte[] data) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.thePlayer == null || mc.thePlayer.sendQueue == null) return;
