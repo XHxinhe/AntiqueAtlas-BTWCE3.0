@@ -1,33 +1,42 @@
 {
   "schemaVersion": 1,
-  "id": "togglezoom",
+  "id": "antiqueatlas",
   "version": "${version}",
-  "name": "Toggle Zoom",
-  "description": "",
+  "name": "Antique Atlas",
+  "description": "Antique Atlas is a book that acts like a map featuring infinite scrolling, zoom and custom labeled markers. The map is generated around the player by calculating the average biome in each 16x16 chunk.",
   "authors": [
+    "Hunternif",
+    "Xy_Luce",
     "Inf1nlty"
   ],
+  "contributors": [
+    "coolAlias",
+    "Kenkron",
+    "TheCodeWarrior",
+    "CapoFantasma97",
+    "Mazdallier"
+  ],
   "contact": {
-    "homepage": "https://github.com/Inf1nlty/ToggleZoom-BTW-CE-3.X",
-    "sources": "https://github.com/Inf1nlty/ToggleZoom-BTW-CE-3.X/"
+    "homepage": "https://github.com/Inf1nlty/AntiqueAtlas-BTWCE3.0",
+    "sources": "https://github.com/Inf1nlty/AntiqueAtlas-BTWCE3.0"
   },
-  "license": "MIT",
-  "icon": "assets/togglezoom/icon.png",
+  "license": "GPL-3.0",
+  "icon": "assets/antiqueatlas/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
     ],
     "btw:addon": [
-      "btw.community.togglezoom.ToggleZoomAddon"
+      "btw.community.antiqueatlas.AntiqueAtlasAddon"
     ]
   },
   "custom": {
-    "btw:addon_prefix": "TZ"
+    "btw:addon_prefix": "AA"
   },
   "mixins": [
-    "togglezoom.mixins.json"
+    "antiqueatlas.mixins.json"
   ],
-  "accessWidener" : "togglezoom.accessWidener",
+  "accessWidener" : "antiqueatlas.accessWidener",
   "depends": {
     "fabricloader": ">=0.14.19",
     "minecraft": "1.6.4"
