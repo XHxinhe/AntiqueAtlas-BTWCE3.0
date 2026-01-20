@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "togglezoom",
+  "version": "${version}",
+  "name": "Toggle Zoom",
+  "description": "",
+  "authors": [
+    "Inf1nlty"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Inf1nlty/ToggleZoom-BTW-CE-3.X",
+    "sources": "https://github.com/Inf1nlty/ToggleZoom-BTW-CE-3.X/"
+  },
+  "license": "MIT",
+  "icon": "assets/togglezoom/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+    ],
+    "btw:addon": [
+      "btw.community.togglezoom.ToggleZoomAddon"
+    ]
+  },
+  "custom": {
+    "btw:addon_prefix": "TZ"
+  },
+  "mixins": [
+    "togglezoom.mixins.json"
+  ],
+  "accessWidener" : "togglezoom.accessWidener",
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "minecraft": "1.6.4"
+  }
+}
