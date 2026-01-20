@@ -1,10 +1,10 @@
 package hunternif.atlas.network;
 
-import hunternif.atlas.api.AtlasNetHandler;
+import hunternif.atlas.api. AtlasNetHandler;
 import hunternif.atlas.util.ShortVec2;
 
 import net.minecraft.src.NetHandler;
-import net.minecraft.src.Packet;
+import net.minecraft. src.Packet;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -33,18 +33,19 @@ public class TilesPacket extends Packet {
         return this.biomeMap.isEmpty();
     }
 
+    @Override
     public void writePacketData(DataOutput out) throws IOException {
         out.writeShort(this.dimension);
-        out.writeShort(this.biomeMap.size());
+        out.writeShort(this.biomeMap. size());
 
-        for(Map.Entry<ShortVec2, Integer> entry : this.biomeMap.entrySet()) {
+        for(Map.Entry<ShortVec2, Integer> entry : this. biomeMap.entrySet()) {
             out.writeShort(((ShortVec2)entry.getKey()).x);
             out.writeShort(((ShortVec2)entry.getKey()).y);
             out.writeShort((Integer)entry.getValue());
         }
-
     }
 
+    @Override
     public void readPacketData(DataInput in) throws IOException {
         this.dimension = in.readShort();
         int length = in.readShort();
@@ -53,14 +54,15 @@ public class TilesPacket extends Packet {
             ShortVec2 coords = new ShortVec2(in.readShort(), in.readShort());
             this.biomeMap.put(coords, Integer.valueOf(in.readShort()));
         }
-
     }
 
+    @Override
     public void processPacket(NetHandler handler) {
         ((AtlasNetHandler)handler).handleMapData(this);
     }
 
+    @Override
     public int getPacketSize() {
-        return 4 + this.biomeMap.size() * 6;
+        return 4 + this.biomeMap. size() * ENTRY_SIZE_BYTES;
     }
 }

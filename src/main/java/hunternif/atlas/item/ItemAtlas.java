@@ -1,4 +1,4 @@
-package hunternif.atlas.item;
+package hunternif.atlas. item;
 
 import hunternif.atlas.AntiqueAtlasItems;
 import hunternif.atlas.AntiqueAtlasMod;
@@ -6,10 +6,13 @@ import hunternif.atlas.core.AtlasData;
 import hunternif.atlas.core.ChunkBiomeAnalyzer;
 import hunternif.atlas.core.ITileStorage;
 import hunternif.atlas.core.Tile;
-import hunternif.atlas.marker.MarkersData;
+import hunternif.atlas.marker. MarkersData;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
 
 public class ItemAtlas extends Item {
+
     public static final String ATLAS_DATA_PREFIX = "aAtlas_";
     public static final String WORLD_ATLAS_DATA_ID = "aAtlas";
     public static final String MARKERS_DATA_PREFIX = "aaMarkers_";
@@ -25,9 +28,9 @@ public class ItemAtlas extends Item {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (world.isRemote) {
-
             AntiqueAtlasMod. openAtlasGUI(stack);
         }
         return stack;
@@ -41,20 +44,17 @@ public class ItemAtlas extends Item {
             return;
         }
 
-        // Sync atlas data
-        if (! world.isRemote && ! data.isSyncedOnPlayer(player) && ! data.isEmpty()) {
+        if (! world.isRemote && ! data.isSyncedOnPlayer(player) && !data.isEmpty()) {
             data.syncOnPlayer(getAtlasID(stack), player);
         }
 
-        // Sync markers data
         MarkersData markers = this.getMarkersData(stack, world);
-        if (!world.isRemote && markers != null && ! markers.isSyncedOnPlayer(player) && !markers.isEmpty()) {
+        if (!world.isRemote && markers != null && !markers.isSyncedOnPlayer(player) && !markers.isEmpty()) {
             markers.syncOnPlayer(getAtlasID(stack), player);
         }
 
-        // Scan surrounding chunks
         ChunkBiomeAnalyzer biomeAnalyzer = ChunkBiomeAnalyzer. instance;
-        if (player.ticksExisted % UPDATE_INTERVAL == 0 && biomeAnalyzer != null) {
+        if (player. ticksExisted % UPDATE_INTERVAL == 0 && biomeAnalyzer != null) {
             int playerX = MathHelper.floor_double(player.posX) >> 4;
             int playerZ = MathHelper.floor_double(player.posZ) >> 4;
             ITileStorage seenChunks = data.getDimensionData(player.dimension);
@@ -95,16 +95,10 @@ public class ItemAtlas extends Item {
         }
     }
 
-    /**
-     * Gets atlas ID from ItemStack metadata
-     */
     public static int getAtlasID(ItemStack stack) {
         return stack.getItemDamage();
     }
 
-    /**
-     * Sets atlas ID to ItemStack metadata
-     */
     public static void setAtlasID(ItemStack stack, int atlasID) {
         stack.setItemDamage(atlasID);
     }
@@ -133,7 +127,7 @@ public class ItemAtlas extends Item {
     }
 
     public MarkersData getMarkersData(ItemStack stack, World world) {
-        if (stack. getItem() != AntiqueAtlasItems.itemAtlas) {
+        if (stack.getItem() != AntiqueAtlasItems.itemAtlas) {
             return null;
         }
         return this. getMarkersData(getAtlasID(stack), world);

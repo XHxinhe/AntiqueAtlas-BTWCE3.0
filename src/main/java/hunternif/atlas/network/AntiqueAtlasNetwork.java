@@ -2,8 +2,8 @@ package hunternif.atlas.network;
 
 import api.BTWAddon;
 import hunternif.atlas.api.AtlasAPI;
-import hunternif.atlas.marker.Marker;
-import hunternif.atlas.util.Log;
+import hunternif.atlas.marker. Marker;
+import hunternif. atlas.util.Log;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.*;
 
@@ -36,8 +36,7 @@ public class AntiqueAtlasNetwork {
 
                 if (! player.worldObj.isRemote) {
                     handleServerPacket(opcode, in, player);
-                }
-                else {
+                } else {
                     handleClientPacket(opcode, in, player);
                 }
             } catch (Exception e) {
@@ -45,7 +44,7 @@ public class AntiqueAtlasNetwork {
             }
         });
 
-        Log.info("Antique Atlas network channel registered:  " + CHANNEL);
+        Log.info("Antique Atlas network channel registered: " + CHANNEL);
     }
 
     private static void handleServerPacket(int opcode, DataInputStream in, EntityPlayer player) throws IOException {
@@ -102,7 +101,7 @@ public class AntiqueAtlasNetwork {
         int atlasID = in.readInt();
         int dimension = in.readInt();
         String customTileName = in.readUTF();
-        int x = in. readInt();
+        int x = in.readInt();
         int z = in.readInt();
 
         AtlasAPI.getTileAPI().putCustomTile(player.worldObj, atlasID, customTileName, x, z);
@@ -110,7 +109,7 @@ public class AntiqueAtlasNetwork {
 
     private static void handleDeleteMarker(DataInputStream in, EntityPlayerMP player) throws IOException {
         int atlasID = in.readInt();
-        int markerID = in. readInt();
+        int markerID = in.readInt();
 
         AtlasAPI.getMarkerAPI().deleteMarker(player.worldObj, atlasID, markerID);
     }
@@ -119,7 +118,7 @@ public class AntiqueAtlasNetwork {
         int atlasID = in.readInt();
         String type = in.readUTF();
         String label = in.readUTF();
-        int x = in. readInt();
+        int x = in.readInt();
         int z = in.readInt();
         boolean visibleAhead = in.readBoolean();
 
@@ -128,7 +127,6 @@ public class AntiqueAtlasNetwork {
 
     private static void handleRegisterTileId(DataInputStream in, EntityPlayerMP player) throws IOException {
         String name = in.readUTF();
-        // AtlasAPI.getTileAPI().setCustomTileTexture(name, ... );
     }
 
     private static void handleMapData(DataInputStream in) throws IOException {
@@ -158,7 +156,7 @@ public class AntiqueAtlasNetwork {
             String type = in.readUTF();
             String label = in.readUTF();
             int x = in.readInt();
-            int z = in. readInt();
+            int z = in.readInt();
             boolean visibleAhead = in.readBoolean();
 
             AtlasAPI.getMarkerAPI().putMarker(Minecraft. getMinecraft().theWorld, visibleAhead, atlasID, type, label, x, z);
@@ -171,7 +169,6 @@ public class AntiqueAtlasNetwork {
         for (int i = 0; i < count; i++) {
             String name = in.readUTF();
             int id = in.readInt();
-            // AtlasAPI.getTileAPI().setPseudoBiomeID(name, id);
         }
     }
 
@@ -235,7 +232,7 @@ public class AntiqueAtlasNetwork {
             dos.writeUTF(name);
             dos.close();
 
-            sendToServer(bos.toByteArray());
+            sendToServer(bos. toByteArray());
         } catch (IOException e) {
             Log.warn("Error sending register tile ID packet: " + e.getMessage());
         }
@@ -250,10 +247,10 @@ public class AntiqueAtlasNetwork {
             dos.writeInt(dimension);
             dos.writeInt(tiles.length);
 
-            for (int[] tile : tiles) {
-                dos.writeInt(tile[0]); // biomeID
-                dos.writeInt(tile[1]); // x
-                dos.writeInt(tile[2]); // z
+            for (int[] tile :  tiles) {
+                dos.writeInt(tile[0]);
+                dos.writeInt(tile[1]);
+                dos.writeInt(tile[2]);
             }
             dos.close();
 
@@ -313,7 +310,7 @@ public class AntiqueAtlasNetwork {
 
         Packet250CustomPayload pkt = new Packet250CustomPayload();
         pkt.channel = CHANNEL;
-        pkt.data = data;
+        pkt. data = data;
         pkt.length = data.length;
         server.getConfigurationManager().sendPacketToAllPlayers(pkt);
     }

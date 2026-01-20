@@ -1,12 +1,12 @@
 package hunternif.atlas.network;
 
 import hunternif.atlas.api.AtlasNetHandler;
-import net.minecraft.src.NetHandler;
-import net.minecraft. src.Packet;
+import net. minecraft.src.NetHandler;
+import net.minecraft.src. Packet;
 
-import java.io.DataInput;
+import java.io. DataInput;
 import java.io.DataOutput;
-import java.io.IOException;
+import java. io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +29,7 @@ public class TileNameIDPacket extends Packet {
         return this;
     }
 
+    @Override
     public void writePacketData(DataOutput out) throws IOException {
         out.writeShort(this.nameToIdMap.size());
 
@@ -38,8 +39,9 @@ public class TileNameIDPacket extends Packet {
         }
     }
 
+    @Override
     public void readPacketData(DataInput in) throws IOException {
-        int length = in. readShort();
+        int length = in.readShort();
         this.nameToIdMap = new HashMap<String, Integer>();
 
         for (int i = 0; i < length; ++i) {
@@ -47,10 +49,12 @@ public class TileNameIDPacket extends Packet {
         }
     }
 
+    @Override
     public void processPacket(NetHandler handler) {
         ((AtlasNetHandler)handler).handleMapData(this);
     }
 
+    @Override
     public int getPacketSize() {
         int ret = 2;
 

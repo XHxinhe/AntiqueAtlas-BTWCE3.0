@@ -2,12 +2,13 @@ package hunternif.atlas.ext;
 
 import hunternif.atlas.AntiqueAtlasMod;
 import hunternif.atlas.api.AtlasAPI;
-import hunternif.atlas.marker.Marker;
+import hunternif. atlas.marker.Marker;
 import hunternif.atlas.marker.MarkersData;
+import hunternif.atlas.util.Log;
 import net.minecraft.src.*;
 
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util. Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,14 +19,12 @@ public class VillageWatcher {
         if (!world.isRemote) {
             this.visitAllUnvisitedVillages(world);
         }
-
     }
 
     public void onPopulateChunkPost(World world) {
         if (!world.isRemote) {
-            this.visitAllUnvisitedVillages(world);
+            this. visitAllUnvisitedVillages(world);
         }
-
     }
 
     public void visitAllUnvisitedVillages(World world) {
@@ -37,7 +36,6 @@ public class VillageWatcher {
                     this.visitVillage(world, village);
                 }
             }
-
         }
     }
 
@@ -51,29 +49,31 @@ public class VillageWatcher {
         for(int dx = -village.getVillageRadius(); dx <= village.getVillageRadius(); dx += 16) {
             for(int dz = -village.getVillageRadius(); dz <= village.getVillageRadius(); dz += 16) {
                 if (dx * dx + dz * dz <= village.getVillageRadius() * village.getVillageRadius()) {
-                    int chunkX = centerX + dx >> 4;
-                    int chunkZ = centerZ + dz >> 4;
+                    int chunkX = (centerX + dx) >> 4;
+                    int chunkZ = (centerZ + dz) >> 4;
                     AtlasAPI.getTileAPI().putCustomGlobalTile(world, "npcVillageTerritory", chunkX, chunkZ);
                     List<Marker> markers = markersData.getMarkersAtChunk(dim, chunkX / 4, chunkZ / 4);
                     if (markers != null) {
                         Iterator<Marker> it = markers.iterator();
 
-                        Marker marker;
-                        do {
-                            while(!it.hasNext()) {
+                        while(it.hasNext()) {
+                            Marker marker = it.next();
+                            if(marker.getType().equals("village")) {
+                                foundMarker = true;
+                                break;
                             }
-
-                            marker = (Marker)it.next();
-                        } while(!marker.getType().equals("village"));
-
-                        foundMarker = true;
+                        }
                     }
                 }
             }
         }
 
         if (!foundMarker) {
-            AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, "village", I18n.getString("gui.antiqueatlas.marker.village"), centerX, centerZ);
+            String label = I18n.getString("gui.antiqueatlas.marker.village");
+            if (label == null || label.isEmpty()) {
+                label = "Village";
+            }
+            AtlasAPI.getMarkerAPI().putGlobalMarker(world, false, "village", label, centerX, centerZ);
         }
 
         for(Object o : village.getVillageDoorInfoList()) {

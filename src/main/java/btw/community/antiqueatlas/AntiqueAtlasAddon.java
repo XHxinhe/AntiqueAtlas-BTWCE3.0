@@ -6,13 +6,13 @@ import api.BTWAddon;
 import hunternif.atlas.AntiqueAtlasItems;
 import hunternif.atlas.AntiqueAtlasMod;
 import hunternif.atlas.AntiqueAtlasRecipes;
-import hunternif.atlas.network.AntiqueAtlasNetwork;
+import hunternif. atlas.network.AntiqueAtlasNetwork;
 
 public class AntiqueAtlasAddon extends BTWAddon {
 
     @Override
     public void initialize() {
-        AddonHandler.logMessage(getName() + " v" + getVersionString() + " Initializing...");
+        AddonHandler. logMessage(getName() + " v" + getVersionString() + " Initializing...");
 
         AntiqueAtlasMod.initialize(this);
 
@@ -20,8 +20,16 @@ public class AntiqueAtlasAddon extends BTWAddon {
 
         AntiqueAtlasRecipes.registerRecipes();
 
-        AntiqueAtlasNetwork.register(this);
+        AntiqueAtlasNetwork. register(this);
 
-        AddonHandler.logMessage(getName() + " initialized successfully!");
+        AddonHandler. logMessage(getName() + " initialized successfully!");
+    }
+
+    @Override
+    public void preInitialize() {
+    }
+
+    @Override
+    public void postInitialize() {
     }
 }

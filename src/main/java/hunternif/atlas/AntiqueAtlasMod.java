@@ -1,10 +1,11 @@
 package hunternif.atlas;
 
 import api.BTWAddon;
-import hunternif.atlas.client.gui.GuiAtlas;
 import hunternif.atlas.ext.ExtBiomeDataHandler;
 import hunternif.atlas.ext.VillageWatcher;
 import hunternif.atlas.marker.GlobalMarkersDataHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
 
 import java.io.File;
@@ -38,10 +39,11 @@ public class AntiqueAtlasMod {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void openAtlasGUI(ItemStack stack) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc != null && mc.currentScreen == null) {
-            GuiAtlas guiAtlas = new GuiAtlas();
+            hunternif.atlas.client.gui.GuiAtlas guiAtlas = new hunternif.atlas.client.gui.GuiAtlas();
             mc.displayGuiScreen(guiAtlas. setAtlasItemStack(stack));
         }
     }
@@ -62,14 +64,11 @@ public class AntiqueAtlasMod {
     }
 
     public static void updateBiomeTextureConfig() {
-        // TODO:
     }
 
     public static void updateMarkerTextureConfig() {
-        // TODO:
     }
 
     public static void updateExtTileConfig() {
-        // TODO:
     }
 }
