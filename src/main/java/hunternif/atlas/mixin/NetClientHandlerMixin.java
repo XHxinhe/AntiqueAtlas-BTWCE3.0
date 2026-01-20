@@ -15,12 +15,14 @@ import hunternif.atlas.network.DeleteMarkerPacket;
 import hunternif.atlas.network.MapDataPacket;
 import hunternif.atlas.network.MarkersPacket;
 import hunternif.atlas.network.PutBiomeTilePacket;
-import hunternif.atlas.network.TileNameIDPacket;
-import hunternif.atlas.network.TilesPacket;
+import hunternif.atlas. network.TileNameIDPacket;
+import hunternif.atlas.network. TilesPacket;
 import hunternif.atlas.util.ShortVec2;
 
 import java.util.Map;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.WorldClient;
@@ -28,6 +30,7 @@ import net.minecraft.src.WorldClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+@Environment(EnvType.CLIENT)
 @Mixin(NetClientHandler.class)
 public class NetClientHandlerMixin implements AtlasNetHandler {
     @Shadow
@@ -35,6 +38,7 @@ public class NetClientHandlerMixin implements AtlasNetHandler {
     @Shadow
     private WorldClient worldClient;
 
+    @Override
     public void handleMapData(MapDataPacket pkt) {
         if (pkt.data != null) {
             AtlasData atlasData = AntiqueAtlasItems.itemAtlas.getAtlasData(pkt.atlasID, this.worldClient);
@@ -42,21 +46,23 @@ public class NetClientHandlerMixin implements AtlasNetHandler {
         }
     }
 
+    @Override
     public void handleMapData(PutBiomeTilePacket pkt) {
         AtlasData data = AntiqueAtlasItems.itemAtlas.getAtlasData(pkt.atlasID, this.mc.theWorld);
         data.setTile(pkt.dimension, pkt.x, pkt.z, new Tile(pkt.biomeID));
     }
 
+    @Override
     public void handleMapData(TilesPacket pkt) {
         ExtBiomeData data = AntiqueAtlasMod.extBiomeData.getData();
 
         for(Map.Entry<ShortVec2, Integer> entry : pkt.biomeMap.entrySet()) {
-            ShortVec2 key = (ShortVec2)entry.getKey();
-            data.setBiomeIdAt(pkt.dimension, key.x, key.y, (Integer)entry.getValue());
+            ShortVec2 key = entry.getKey();
+            data.setBiomeIdAt(pkt.dimension, key.x, key.y,entry.getValue());
         }
-
     }
 
+    @Override
     public void handleMapData(MarkersPacket pkt) {
         MarkersData markersData;
         if (pkt.isGlobal()) {
@@ -65,28 +71,27 @@ public class NetClientHandlerMixin implements AtlasNetHandler {
             markersData = AntiqueAtlasItems.itemAtlas.getMarkersData(pkt.atlasID, this.mc.theWorld);
         }
 
-        MarkersData markersData2 = markersData;
-
         for(Marker marker : pkt.markersByType.values()) {
-            markersData2.loadMarker(marker);
+            markersData.loadMarker(marker);
         }
-
     }
 
+    @Override
     public void handleMapData(DeleteMarkerPacket pkt) {
         MarkersData markersData;
         if (pkt.isGlobal()) {
             markersData = AntiqueAtlasMod.globalMarkersData.getData();
         } else {
-            markersData = AntiqueAtlasItems.itemAtlas.getMarkersData(pkt.atlasID, this.mc.theWorld);
+            markersData = AntiqueAtlasItems.itemAtlas.getMarkersData(pkt.atlasID,this.mc.theWorld);
         }
 
         markersData.removeMarker(pkt.markerID);
     }
 
+    @Override
     public void handleMapData(TileNameIDPacket pkt) {
         for(Map.Entry<String, Integer> entry : pkt.nameToIdMap.entrySet()) {
-            ExtTileIdMap.instance().setPseudoBiomeID((String)entry.getKey(), (Integer)entry.getValue());
+            ExtTileIdMap.instance().setPseudoBiomeID(entry.getKey(),entry.getValue());
         }
 
         TileApiImpl tileAPI = (TileApiImpl)AtlasAPI.getTileAPI();

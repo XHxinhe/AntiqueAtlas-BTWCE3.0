@@ -4,11 +4,12 @@
   "package": "hunternif.atlas.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MinecraftServerMixin",
     "NetHandlerMixin",
-    "NetClientHandlerMixin",
     "NetServerHandlerMixin"
   ],
   "client": [
+    "NetClientHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

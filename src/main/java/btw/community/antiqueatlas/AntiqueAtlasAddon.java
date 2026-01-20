@@ -6,7 +6,9 @@ import api.BTWAddon;
 import hunternif.atlas.AntiqueAtlasItems;
 import hunternif.atlas.AntiqueAtlasMod;
 import hunternif.atlas.AntiqueAtlasRecipes;
-import hunternif. atlas.network.AntiqueAtlasNetwork;
+import hunternif.atlas.network.AntiqueAtlasNetwork;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.NetServerHandler;
 
 public class AntiqueAtlasAddon extends BTWAddon {
 
@@ -20,9 +22,9 @@ public class AntiqueAtlasAddon extends BTWAddon {
 
         AntiqueAtlasRecipes.registerRecipes();
 
-        AntiqueAtlasNetwork. register(this);
+        AntiqueAtlasNetwork.register(this);
 
-        AddonHandler. logMessage(getName() + " initialized successfully!");
+        AddonHandler.logMessage(getName() + " initialized successfully!");
     }
 
     @Override
@@ -31,5 +33,11 @@ public class AntiqueAtlasAddon extends BTWAddon {
 
     @Override
     public void postInitialize() {
+    }
+
+    @Override
+    public void serverPlayerConnectionInitialized(NetServerHandler serverHandler, EntityPlayerMP playerMP) {
+        super.serverPlayerConnectionInitialized(serverHandler, playerMP);
+        AntiqueAtlasMod.onPlayerLogin(playerMP);
     }
 }
