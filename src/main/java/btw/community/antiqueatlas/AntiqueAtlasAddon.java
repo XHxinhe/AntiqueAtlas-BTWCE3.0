@@ -16,7 +16,7 @@ public class AntiqueAtlasAddon extends BTWAddon {
     public void initialize() {
         AddonHandler. logMessage(getName() + " v" + getVersionString() + " Initializing...");
 
-        AntiqueAtlasMod.initialize();
+        AntiqueAtlasMod.initialize(this);
 
         AntiqueAtlasItems.registerItems();
 

@@ -5,6 +5,8 @@ import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.World;
 
+import java.util.Map;
+
 public interface TileAPI {
     int VERSION = 4;
 
