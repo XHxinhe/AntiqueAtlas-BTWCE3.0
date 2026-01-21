@@ -7,7 +7,7 @@
     "MixinChunkProviderServer",
     "NetHandlerMixin",
     "NetServerHandlerMixin",
-    "MixinWorldServer"
+    "WorldServerMixin"
   ],
   "client": [
     "NetClientHandlerMixin"
