@@ -13,7 +13,7 @@ public class AntiqueAtlasMod {
 
     public static final ExtBiomeDataHandler extBiomeData = new ExtBiomeDataHandler();
     public static final GlobalMarkersDataHandler globalMarkersData = new GlobalMarkersDataHandler();
-    private static final VillageWatcher villageWatcher = new VillageWatcher();
+    public static final VillageWatcher villageWatcher = new VillageWatcher();
     public static final SettingsConfig settings = new SettingsConfig();
 
     public static void initialize() {
@@ -43,6 +43,10 @@ public class AntiqueAtlasMod {
         if (player != null && ! player.worldObj.isRemote) {
             extBiomeData.onPlayerLogin(player);
             globalMarkersData.onPlayerLogin(player);
+
+            // 【新增】玩家登录时，强制扫描一次当前世界的村庄
+            System.out.println("[AtlasDebug] 玩家登录，触发村庄扫描...");
+            villageWatcher.onWorldLoad(player.worldObj);
         }
     }
 
