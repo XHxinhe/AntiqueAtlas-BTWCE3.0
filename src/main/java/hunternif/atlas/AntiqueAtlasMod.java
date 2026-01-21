@@ -3,7 +3,6 @@ package hunternif.atlas;
 import hunternif.atlas.ext.ExtBiomeDataHandler;
 import hunternif.atlas.ext.VillageWatcher;
 import hunternif.atlas.marker.GlobalMarkersDataHandler;
-import hunternif.atlas.network.AtlasVanillaPacketRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
@@ -18,8 +17,6 @@ public class AntiqueAtlasMod {
     public static final SettingsConfig settings = new SettingsConfig();
 
     public static void initialize() {
-
-        AtlasVanillaPacketRegistry.registerAll();
 
         File configDir = new File("config");
         if (!configDir.exists()) {
